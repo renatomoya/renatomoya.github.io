@@ -105,7 +105,7 @@ $ mix ecto.migrate
 
 If you're seeing an error while executing any of these commands, you need to make sure you have PostgreSQL running and you have a role _"postgres"_ with password _"postgres"_ created. If you want to change the database configuration you can change it in `config/dev.ex` line 32-33.
 
-If everything runs great, you should see something like this:
+If everything runs okay, you should see something like this:
 
 ----
 $ mix ecto.create
@@ -124,4 +124,26 @@ $ mkdir -p web/controllers/v1
 $ mv web/controllers/post_controller.ex web/controllers/v1
 $ mkdir -p web/views/v1
 $ mv web/views/post_view.ex web/views/v1
+$ mkdir -p test/controllers/v1
+$ mv test/controllers/post_controller_test.exs test/controllers/v1/
+----
+
+Now we need to add `V1` in the module name for each file, like this:
+
+[source,elixir]
+----
+# web/controllers/v1/post_controller.ex
+defmodule RestApi.V1.PostController
+...
+end
+
+# test/controllers/v1/post_controller_test.exs
+defmodule RestApi.V1.PostControllerTest do
+...
+end
+
+# web/views/v1/post_view.ex
+defmodule RestApi.V1.PostView do
+...
+end
 ----
