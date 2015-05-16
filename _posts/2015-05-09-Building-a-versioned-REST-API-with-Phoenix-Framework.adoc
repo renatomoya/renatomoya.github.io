@@ -20,9 +20,8 @@ I will assume you have the following already installed in your system:
 
 To create a new phoenix project run:
 
-[source,bash]
 ----
-mix phoenix.new rest_api --no-brunch
+$ mix phoenix.new rest_api --no-brunch
 ----
 
 where `rest_api` will be the folder of our project. Phoenix also accept an absolute path to a folder. The `--no-brunch` flag tells `phoenix.new` task we don't want to use `brunch.io` for our static asset compilation.
@@ -30,7 +29,6 @@ where `rest_api` will be the folder of our project. Phoenix also accept an absol
 
 You'll be prompted if you want to install mix dependencies, which we should do.
 
-[source,bash]
 ----
 Install mix dependencies? [Yn] Y
 ----
@@ -39,11 +37,17 @@ Done. You can now access the folder Phoenix created for our project.
 
 Once mix dependencies are installed, the task will prompt you to change into the project directory and start the application.
 
-Skip that for now and let's dive into building our API first.
+Let's remove all auto-generated files Phoenix created for us and start from scratch.
+
+----
+$ rm web/controllers/page_controller.ex web/views/page_view.ex test/controllers/page_controller_test.exs test/views/page_view_test.exs
+----
+
+Now let's start building our API resources.
 
 === Generating API resources
 
-Phoenix ships with a tasks to generate resources for us. These tasks are:
+Phoenix ships with tasks to generate resources for us. These tasks are:
 
   * http://hexdocs.pm/phoenix/Mix.Tasks.Phoenix.Gen.Html.html:[phoenix.gen.html]
   * http://hexdocs.pm/phoenix/Mix.Tasks.Phoenix.Gen.Json.html:[phoenix.gen.json]
@@ -53,9 +57,8 @@ The one we're really interested here is `phoenix.gen.json`.
 
 Let's create a new resource called `posts`:
 
-[source,bash]
 ----
-mix phoenix.gen.json Post posts title:string content:string
+$ mix phoenix.gen.json Post posts title:string content:string
 ----
 
 This will generate:
@@ -89,4 +92,36 @@ defmodule RestApi.Router do
     end
   end
 end
+----
+
+We got rid of a lot of code we're not using for an API. We added the resource `"/posts"` within the `"/v1"` scope and we setup the `:api` pipeline within `"/"` scope.
+
+Now let's create our development database and run the migration:
+
+----
+$ mix ecto.create
+$ mix ecto.migrate
+----
+
+If you're seeing an error while executing any of these commands, you need to make sure you have PostgreSQL running and you have a role _"postgres"_ with password _"postgres"_ created. If you want to change the database configuration you can change it in `config/dev.ex` line 32-33.
+
+If everything runs great, you should see something like this:
+
+----
+$ mix ecto.create
+...
+The database for RestApi.Repo has been created.
+$ mix ecto.migrate
+[info] == Running RestApi.Repo.Migrations.CreatePost.change/0 forward
+[info] create table posts
+[info] == Migrated in 0.1s
+----
+
+Now we need to version our controllers and views. First let's create some folders and move the files:
+
+----
+$ mkdir -p web/controllers/v1
+$ mv web/controllers/post_controller.ex web/controllers/v1
+$ mkdir -p web/views/v1
+$ mv web/views/post_view.ex web/views/v1
 ----
