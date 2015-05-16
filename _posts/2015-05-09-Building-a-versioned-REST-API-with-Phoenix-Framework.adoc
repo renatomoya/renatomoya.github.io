@@ -1,0 +1,92 @@
+= Building a versioned REST API with Phoenix Framework
+
+I've been playing http://elixir-lang.org/:[Elixir] lately and I gotta say the more I toy with it, the more I love it.
+
+Erglang syntax is simple, concise and easy to understand but Elixir is that and much more. In one word, *Beautiful*, it's like Ruby's cute new little sister.
+
+I've also been toying with http://www.phoenixframework.org/:[Phoenix Framework] which is a great framework to build blazing fast web applications with Elixir.
+
+This time, in order to learn the language and the framework, I decided to build a REST API for a personal project.
+
+=== Dependencies
+
+I will assume you have the following already installed in your system:
+
+  * PostgreSQL (http://www.postgresql.org/download/:[Installing PostgreSQL])
+  * Elixir (http://elixir-lang.org/install.html:[Installing Elixir])
+  * Phoenix Framework (http://www.phoenixframework.org/v0.13.0/docs/up-and-running:[Installing Phoenix Framework])
+
+=== Getting started
+
+To create a new phoenix project run:
+
+[source,bash]
+----
+mix phoenix.new rest_api --no-brunch
+----
+
+where `rest_api` will be the folder of our project. Phoenix also accept an absolute path to a folder. The `--no-brunch` flag tells `phoenix.new` task we don't want to use `brunch.io` for our static asset compilation.
+
+
+You'll be prompted if you want to install mix dependencies, which we should do.
+
+[source,bash]
+----
+Install mix dependencies? [Yn] Y
+----
+
+Done. You can now access the folder Phoenix created for our project.
+
+Once mix dependencies are installed, the task will prompt you to change into the project directory and start the application.
+
+Skip that for now and let's dive into building our API first.
+
+=== Generating API resources
+
+Phoenix ships with a tasks to generate resources for us. These tasks are:
+
+  * http://hexdocs.pm/phoenix/Mix.Tasks.Phoenix.Gen.Html.html:[phoenix.gen.html]
+  * http://hexdocs.pm/phoenix/Mix.Tasks.Phoenix.Gen.Json.html:[phoenix.gen.json]
+  * http://hexdocs.pm/phoenix/Mix.Tasks.Phoenix.Gen.Model.html:[phoenix.gen.model]
+
+The one we're really interested here is `phoenix.gen.json`.
+
+Let's create a new resource called `posts`:
+
+[source,bash]
+----
+mix phoenix.gen.json Post posts title:string content:string
+----
+
+This will generate:
+
+  * A model `web/models/post.ex`.
+  * A model test file `test/models/post_test.exs`.
+  * A migration file in `priv/repo/migrations/20150516125431_create_post.exs`
+  * A post view `web/views/post_view.ex`.
+  * A changeset view `web/views/changeset_view.ex`.
+  * A controller `web/controllers/post_controller.ex`.
+  * A controller test file in `test/controllers/post_controller_test.exs`.
+
+It will also prompt you with a few instructions to update the router `web/router.ex` and to run the migrations. Let's do that now.
+
+Open `web/router.ex` and change it to this:
+
+[source,elixir]
+----
+defmodule RestApi.Router do
+  use RestApi.Web, :router
+
+  pipeline :api do
+    plug :accepts, ["json"]
+  end
+
+  scope "/", RestApi do
+    pipe_through :api
+
+    scope "/v1", V1, as: :v1 do
+      resources "/posts", PostController
+    end
+  end
+end
+----
