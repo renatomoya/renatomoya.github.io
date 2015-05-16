@@ -96,16 +96,23 @@ end
 
 We got rid of a lot of code we're not using for an API. We added the resource `"/posts"` within the `"/v1"` scope and we setup the `:api` pipeline within `"/"` scope.
 
-Now let's create our development database and run the migration:
+Let's run `phoenix.routes` to list our routes:
 
 ----
-$ mix ecto.create
-$ mix ecto.migrate
+$ mix phoenix.routes
+...
+Generated rest_api app
+v1_post_path  GET     /v1/posts           RestApi.V1.PostController.index/2
+v1_post_path  GET     /v1/posts/:id/edit  RestApi.V1.PostController.edit/2
+v1_post_path  GET     /v1/posts/new       RestApi.V1.PostController.new/2
+v1_post_path  GET     /v1/posts/:id       RestApi.V1.PostController.show/2
+v1_post_path  POST    /v1/posts           RestApi.V1.PostController.create/2
+v1_post_path  PATCH   /v1/posts/:id       RestApi.V1.PostController.update/2
+              PUT     /v1/posts/:id       RestApi.V1.PostController.update/2
+v1_post_path  DELETE  /v1/posts/:id       RestApi.V1.PostController.delete/2
 ----
 
-If you're seeing an error while executing any of these commands, you need to make sure you have PostgreSQL running and you have a role _"postgres"_ with password _"postgres"_ created. If you want to change the database configuration you can change it in `config/dev.ex` line 32-33.
-
-If everything runs okay, you should see something like this:
+Routes all set, next thing is to create our development and test database and run the migration:
 
 ----
 $ mix ecto.create
@@ -117,7 +124,9 @@ $ mix ecto.migrate
 [info] == Migrated in 0.1s
 ----
 
-Now we need to version our controllers and views. First let's create some folders and move the files:
+If you're seeing an error while executing any of these commands, you need to make sure you have PostgreSQL running and you have a role _"postgres"_ with password _"postgres"_ created. If you want to change the database configuration you can change it in `config/dev.ex` line 32-33 and `config/test.ex` line 15-16.
+
+Next we need to version our controllers and views and make some additional modifications. First let's create some folders and move the files:
 
 ----
 $ mkdir -p web/controllers/v1
@@ -128,7 +137,7 @@ $ mkdir -p test/controllers/v1
 $ mv test/controllers/post_controller_test.exs test/controllers/v1/
 ----
 
-Now we need to add `V1` in the module name for each file, like this:
+Add `V1` to each module name we're versioning like this:
 
 [source,elixir]
 ----
@@ -147,3 +156,26 @@ defmodule RestApi.V1.PostView do
 ...
 end
 ----
+
+If you run the test now, you'll see an error like this:
+
+----
+$ mix test
+...
+** (CompileError) test/controllers/v1/post_controller_test.exs:14: function post_path/2 undefined
+    (stdlib) lists.erl:1336: :lists.foreach/2
+    (stdlib) erl_eval.erl:657: :erl_eval.do_apply/6
+----
+
+This is because the router helper `post_path/2` doesn't exists. When we setup our resource within the `"/v1"` scope, we specified the option `as: :v1` which adds the prefix to the router helper `post_path/2`.
+
+To fix this, we need to replace `post_path` calls for `v1_post_path` in `test/controllers/v1/post_controller_test.exs`.
+
+Once fixed, if you run the test again, you should see four failing tests with the following error:
+
+----
+...
+** (UndefinedFunctionError) undefined function: RestApi.PostView.__resource__/0 (module RestApi.PostView is not available)
+...
+----
+
