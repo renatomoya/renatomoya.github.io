@@ -224,3 +224,5 @@ Randomized with seed 848797
 ----
 
 There you have it, a simple REST API built with Phoenix Framework and Elixir.
+
+You can get the code in Github: https://github.com/renatomoya/rest_api[github.com/renatomoya/rest_api, window="_blank"]
