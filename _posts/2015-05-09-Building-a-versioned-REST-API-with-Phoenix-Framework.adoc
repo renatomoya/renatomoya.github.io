@@ -10,7 +10,7 @@ I've also been toying with http://www.phoenixframework.org/:[Phoenix Framework] 
 
 This time, in order to learn the language and the framework, I decided to build a REST API for a personal project.
 
-=== Dependencies
+== Dependencies
 
 I will assume you have the following already installed in your system:
 
@@ -18,7 +18,7 @@ I will assume you have the following already installed in your system:
   * Elixir (http://elixir-lang.org/install.html:[Installing Elixir])
   * Phoenix Framework (http://www.phoenixframework.org/v0.13.0/docs/up-and-running:[Installing Phoenix Framework])
 
-=== Getting started
+== Getting started
 
 To create a new phoenix project run:
 
@@ -47,7 +47,7 @@ $ rm web/controllers/page_controller.ex web/views/page_view.ex test/controllers/
 
 Now let's start building our API resources.
 
-=== Generating API resources
+== Generating API resources
 
 Phoenix ships with tasks to generate resources for us. These tasks are:
 
