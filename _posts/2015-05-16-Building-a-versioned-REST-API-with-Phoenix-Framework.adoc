@@ -1,5 +1,4 @@
 = Building a versioned REST API with Phoenix Framework
-:published_at: 2015-05-16
 
 :hp-tags: Elixir, Phoenix Framework, REST API, Tutorials
 :linkattrs:
