@@ -14,9 +14,9 @@ This time, in order to learn the language and the framework, I decided to build 
 
 I will assume you have the following already installed in your system:
 
-  * PostgreSQL (http://www.postgresql.org/download/:[Installing PostgreSQL])
-  * Elixir (http://elixir-lang.org/install.html:[Installing Elixir])
-  * Phoenix Framework (http://www.phoenixframework.org/v0.13.0/docs/up-and-running:[Installing Phoenix Framework])
+* PostgreSQL (http://www.postgresql.org/download/:[Installing PostgreSQL])
+* Elixir (http://elixir-lang.org/install.html:[Installing Elixir])
+* Phoenix Framework (http://www.phoenixframework.org/v0.13.0/docs/up-and-running:[Installing Phoenix Framework])
 
 == Getting started
 
@@ -51,9 +51,9 @@ Now let's start building our API resources.
 
 Phoenix ships with tasks to generate resources for us. These tasks are:
 
-  * http://hexdocs.pm/phoenix/Mix.Tasks.Phoenix.Gen.Html.html:[phoenix.gen.html]
-  * http://hexdocs.pm/phoenix/Mix.Tasks.Phoenix.Gen.Json.html:[phoenix.gen.json]
-  * http://hexdocs.pm/phoenix/Mix.Tasks.Phoenix.Gen.Model.html:[phoenix.gen.model]
+* http://hexdocs.pm/phoenix/Mix.Tasks.Phoenix.Gen.Html.html:[phoenix.gen.html]
+* http://hexdocs.pm/phoenix/Mix.Tasks.Phoenix.Gen.Json.html:[phoenix.gen.json]
+* http://hexdocs.pm/phoenix/Mix.Tasks.Phoenix.Gen.Model.html:[phoenix.gen.model]
 
 The one we're really interested here is `phoenix.gen.json`.
 
@@ -65,13 +65,13 @@ $ mix phoenix.gen.json Post posts title:string content:string
 
 This will generate:
 
-  * A model `web/models/post.ex`.
-  * A model test file `test/models/post_test.exs`.
-  * A migration file in `priv/repo/migrations/20150516125431_create_post.exs`
-  * A post view `web/views/post_view.ex`.
-  * A changeset view `web/views/changeset_view.ex`.
-  * A controller `web/controllers/post_controller.ex`.
-  * A controller test file in `test/controllers/post_controller_test.exs`.
+* A model `web/models/post.ex`.
+* A model test file `test/models/post_test.exs`.
+* A migration file in `priv/repo/migrations/20150516125431_create_post.exs`
+* A post view `web/views/post_view.ex`.
+* A changeset view `web/views/changeset_view.ex`.
+* A controller `web/controllers/post_controller.ex`.
+* A controller test file in `test/controllers/post_controller_test.exs`.
 
 It will also prompt you with a few instructions to update the router `web/router.ex` and to run the migrations. Let's do that now.
 
