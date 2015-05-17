@@ -2,11 +2,11 @@
 
 :hp-tags: Elixir, Phoenix Framework, REST API, Tutorials
 
-I've been playing http://elixir-lang.org/:[Elixir] lately and I gotta say the more I toy with it, the more I love it.
+I've been playing http://elixir-lang.org/[Elixir] lately and I gotta say the more I toy with it, the more I love it.
 
 Erglang syntax is simple, concise and easy to understand but Elixir is that and much more. In one word, *Beautiful*, it's like Ruby's cute new little sister.
 
-I've also been toying with http://www.phoenixframework.org/:[Phoenix Framework] which is a great framework to build blazing fast web applications with Elixir.
+I've also been toying with http://www.phoenixframework.org[Phoenix Framework] which is a great framework to build blazing fast web applications with Elixir.
 
 This time, in order to learn the language and the framework, I decided to build a REST API for a personal project.
 
@@ -14,9 +14,9 @@ This time, in order to learn the language and the framework, I decided to build 
 
 I will assume you have the following already installed in your system:
 
-* PostgreSQL (http://www.postgresql.org/download/:[Installing PostgreSQL])
-* Elixir (http://elixir-lang.org/install.html:[Installing Elixir])
-* Phoenix Framework (http://www.phoenixframework.org/v0.13.0/docs/up-and-running:[Installing Phoenix Framework])
+* PostgreSQL (http://www.postgresql.org/download[Installing PostgreSQL])
+* Elixir (http://elixir-lang.org/install.html[Installing Elixir])
+* Phoenix Framework (http://www.phoenixframework.org/v0.13.0/docs/up-and-running[Installing Phoenix Framework])
 
 == Getting started
 
@@ -51,9 +51,9 @@ Now let's start building our API resources.
 
 Phoenix ships with tasks to generate resources for us. These tasks are:
 
-* http://hexdocs.pm/phoenix/Mix.Tasks.Phoenix.Gen.Html.html:[phoenix.gen.html]
-* http://hexdocs.pm/phoenix/Mix.Tasks.Phoenix.Gen.Json.html:[phoenix.gen.json]
-* http://hexdocs.pm/phoenix/Mix.Tasks.Phoenix.Gen.Model.html:[phoenix.gen.model]
+* http://hexdocs.pm/phoenix/Mix.Tasks.Phoenix.Gen.Html.html[phoenix.gen.html]
+* http://hexdocs.pm/phoenix/Mix.Tasks.Phoenix.Gen.Json.html[phoenix.gen.json]
+* http://hexdocs.pm/phoenix/Mix.Tasks.Phoenix.Gen.Model.html[phoenix.gen.model]
 
 The one we're really interested here is `phoenix.gen.json`.
 
@@ -183,11 +183,11 @@ Once fixed, if you run the test again, you should see four failing tests with th
 
 This seems like a bug at first, but then I looked through the source code and I found that the issue is because we're calling `render_many/2` and `render_one/2` in `web/views/v1/post_view.ex`.
 
-If you follow the code, you'll notice that https://github.com/phoenixframework/phoenix/blob/v0.13.0/lib/phoenix/view.ex#L261:[Phoenix.View.render_many/2] and https://github.com/phoenixframework/phoenix/blob/v0.13.0/lib/phoenix/view.ex#L330:[Phoenix.View.render_one/2] call https://github.com/phoenixframework/phoenix/blob/v0.13.0/lib/phoenix/view.ex#L268:[Phoenix.View.render_many/3] and https://github.com/phoenixframework/phoenix/blob/v0.13.0/lib/phoenix/view.ex#L337:[Phoenix.View.render_one/3] respectively and these two functions call https://github.com/phoenixframework/phoenix/blob/v0.13.0/lib/phoenix/view.ex#L414:[Phoenix.View.view_for_model/1] which inflects the view for a model and does not considering our versioning model.
+If you follow the code, you'll notice that https://github.com/phoenixframework/phoenix/blob/v0.13.0/lib/phoenix/view.ex#L261[Phoenix.View.render_many/2] and https://github.com/phoenixframework/phoenix/blob/v0.13.0/lib/phoenix/view.ex#L330[Phoenix.View.render_one/2] call https://github.com/phoenixframework/phoenix/blob/v0.13.0/lib/phoenix/view.ex#L268[Phoenix.View.render_many/3] and https://github.com/phoenixframework/phoenix/blob/v0.13.0/lib/phoenix/view.ex#L337[Phoenix.View.render_one/3] respectively and these two functions call https://github.com/phoenixframework/phoenix/blob/v0.13.0/lib/phoenix/view.ex#L414[Phoenix.View.view_for_model/1] which inflects the view for a model and does not considering our versioning model.
 
 I gotta admit, I pulled my hair for a few minutes over this but then I found the solution thanks to Chris McCord.
 
-To fix it you need to call https://github.com/phoenixframework/phoenix/blob/v0.13.0/lib/phoenix/view.ex#L280:[Phoenix.View.render_many/3] and https://github.com/phoenixframework/phoenix/blob/v0.13.0/lib/phoenix/view.ex#L345:[Phoenix.View.render_one/3] respectively instead and pass the View module name like this:
+To fix it you need to call https://github.com/phoenixframework/phoenix/blob/v0.13.0/lib/phoenix/view.ex#L280[Phoenix.View.render_many/3] and https://github.com/phoenixframework/phoenix/blob/v0.13.0/lib/phoenix/view.ex#L345[Phoenix.View.render_one/3] respectively instead and pass the View module name like this:
 
 [source,elixir]
 ----
